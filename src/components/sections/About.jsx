@@ -1,168 +1,188 @@
-import { RevealOnScroll } from "../RevealOnScroll";
+import { Suspense, lazy, useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { TechButton } from "../ui/TechButton";
+
+gsap.registerPlugin(ScrollTrigger);
+
+// O dock usa framer-motion (~32 kB gzip): fica num chunk à parte, fora do bundle inicial
+const TechStack = lazy(() =>
+  import("../TechStack").then((mod) => ({ default: mod.TechStack }))
+);
+
+const BIO =
+  "Estudo Ciência da Computação na FECAP, sou desenvolvedor full stack e coordeno o NúcleoTech. Já levei projetos de hackathon ao pódio nacional e hoje construo produtos próprios enquanto estagio na Deloitte. Bora construir algo incrível juntos?";
+
+const STATS = [
+  "4+ prêmios em competições nacionais",
+  "10+ projetos web & mobile entregues",
+  "3 produtos em desenvolvimento ativo",
+];
+
+/* Glifos decorativos flutuando nos cantos, no lugar dos renders 3D */
+const corners = [
+  { text: "{ }", cls: "left-[2%] top-[6%] md:left-[5%]", from: -80, rot: "-rotate-12" },
+  { text: "</>", cls: "right-[2%] top-[6%] md:right-[5%]", from: 80, rot: "rotate-12" },
+  { text: "✦", cls: "bottom-[10%] left-[4%] md:left-[10%]", from: -80, rot: "rotate-6" },
+  { text: "*", cls: "bottom-[6%] right-[4%] md:right-[10%]", from: 80, rot: "-rotate-6" },
+];
 
 export const About = () => {
-  const frontendSkills = [
-    "HTML5",
-    "CSS3",
-    "JavaScript (ES6+)",
-    "React",
-    "Next.js",
-    "React Native",
-    "Redux",
-    "Vite",
-    "Tailwind CSS",
-    "Styled Components",
-    "SCSS",
-    "Figma"
-  ];
+  const scope = useRef(null);
 
-  const backendSkills = [
-    "Node.js",
-    "Express",
-    "REST APIs",
-    "Git",
-    "GitHub",
-    "Virtualização (Oracle/KVM)",
-    "Linux (Kali/Ubuntu)",
-    "macOS"
-  ];
+  useEffect(() => {
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-  const softSkills = [
-    "Trabalho em equipe",
-    "Comunicação eficaz",
-    "Resolução de problemas",
-    "Raciocínio lógico",
-    "Adaptabilidade",
-    "Aprendizado contínuo"
-  ];
+    const ctx = gsap.context(() => {
+      if (prefersReduced) {
+        gsap.set(
+          "[data-about], [data-about='footer'] > *, .about-char, .about-corner",
+          { opacity: 1 }
+        );
+        return;
+      }
 
-  const cursosCerts = [
-    "Bootcamp Santander Cibersegurança – DIO (2024–2025)",
-    "Conceitos e Práticas de SO e VMs – DIO (2024–2025)",
-    "Desvendando a Blockchain – SENAI (2025)",
-    "Desvendando a Indústria 4.0 – SENAI (2025)"
-  ];
+      gsap.fromTo(
+        "[data-about='title']",
+        { autoAlpha: 0, y: 40 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: { trigger: "[data-about='title']", start: "top 85%" },
+        }
+      );
+
+      // Revelação caractere a caractere guiada pelo scroll
+      gsap.fromTo(
+        ".about-char",
+        { opacity: 0.15 },
+        {
+          opacity: 1,
+          ease: "none",
+          stagger: 0.6,
+          scrollTrigger: {
+            trigger: "[data-about='bio']",
+            start: "top 80%",
+            end: "bottom 35%",
+            scrub: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        "[data-about='footer'] > *",
+        { autoAlpha: 0, y: 20 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: { trigger: "[data-about='footer']", start: "top 90%" },
+        }
+      );
+
+      // Cantos: entram pelas laterais e ficam flutuando
+      gsap.utils.toArray(".about-corner").forEach((el, i) => {
+        gsap.fromTo(
+          el,
+          { autoAlpha: 0, x: parseFloat(el.dataset.from) },
+          {
+            autoAlpha: 0.5,
+            x: 0,
+            duration: 0.9,
+            delay: i * 0.1,
+            ease: "power3.out",
+            scrollTrigger: { trigger: scope.current, start: "top 70%" },
+          }
+        );
+        gsap.to(el, {
+          y: i % 2 ? 18 : -18,
+          duration: 5 + i,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+        });
+      });
+    }, scope);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section id="about" className="min-h-screen flex items-center justify-center py-20">
-      <RevealOnScroll>
-        <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent text-center">
-            Sobre Mim
+    <section
+      ref={scope}
+      id="about"
+      className="relative flex min-h-screen flex-col items-center justify-center px-5 py-20 sm:px-8 md:px-10"
+    >
+      {corners.map((c) => (
+        <span
+          key={c.text + c.cls}
+          aria-hidden="true"
+          data-from={c.from}
+          className={`about-corner text-gradient pointer-events-none absolute z-0 font-mono font-black opacity-0 ${c.cls} ${c.rot}`}
+          style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}
+        >
+          {c.text}
+        </span>
+      ))}
+
+      <div className="relative z-10 flex max-w-4xl flex-col items-center gap-16 sm:gap-20 md:gap-24">
+        <div className="flex flex-col items-center gap-10 sm:gap-14 md:gap-16">
+          <h2
+            data-about="title"
+            className="display-heading text-gradient opacity-0"
+            style={{ fontSize: "clamp(3rem, 12vw, 160px)" }}
+          >
+            Sobre mim
           </h2>
 
-          <div className="rounded-xl p-8 border-white/10 border hover:-translate-y-1 transition-all">
-            <p className="text-gray-300 mb-6">
-              Olá! Eu sou <strong>Vinicius Nishimura Reis</strong>, desenvolvedor <strong>Web e Mobile</strong> com foco
-              em criar interfaces <em>responsivas</em>, acessíveis e centradas no usuário. Tenho experiência sólida em
-              <strong> HTML, CSS, JavaScript, React e React Native</strong>, além de práticas de UI/UX, prototipagem no{" "}
-              <strong>Figma</strong> e boas práticas de usabilidade. Atuo em projetos que conectam tecnologia e impacto
-              real, sempre buscando soluções eficientes e modernas.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Frontend */}
-              <div className="rounded-xl p-6 hover:-translate-y-1 transition-all">
-                <h3 className="text-xl font-bold mb-4">🚀 Frontend</h3>
-                <div className="flex flex-wrap gap-2">
-                  {frontendSkills.map((tech) => (
-                    <span
-                      key={tech}
-                      className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20 
-                      hover:shadow-[0_2px_8px_rgba(59,130,246,0.2)] transition"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Backend & Ferramentas */}
-              <div className="rounded-xl p-6 hover:-translate-y-1 transition-all">
-                <h3 className="text-xl font-bold mb-4">⚙️ Backend & Ferramentas</h3>
-                <div className="flex flex-wrap gap-2">
-                  {backendSkills.map((tech) => (
-                    <span
-                      key={tech}
-                      className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20 
-                      hover:shadow-[0_2px_8px_rgba(59,130,246,0.2)] transition"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Educação e Experiência */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            <div className="p-6 rounded-xl border-white/10 border hover:-translate-y-1 transition-all">
-              <h3 className="text-xl font-bold mb-4">🏫 Formação Acadêmica</h3>
-              <ul className="list-disc list-inside text-gray-300 space-y-2">
-                <li>
-                  <strong>Bacharelado em Ciências da Computação</strong> – FECAP, São Paulo
-                  <br />
-                  <span className="text-gray-400">Set/2024 – Set/2028 (em andamento)</span>
-                </li>
-                <li>
-                  <strong>Técnico em Informática para Internet</strong> – Etec Sebrae, São Paulo
-                  <br />
-                  <span className="text-gray-400">Jan/2023 – Nov/2024 (concluído)</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="p-6 rounded-xl border-white/10 border hover:-translate-y-1 transition-all">
-              <h3 className="text-xl font-bold mb-4">💼 Perfil & Atuação</h3>
-              <div className="space-y-3 text-gray-300">
-                <p>
-                  Desenvolvedor Frontend com experiência em <strong>interfaces responsivas</strong> e foco em{" "}
-                  <strong>UX</strong>. Perfil proativo, colaborativo e orientado a resultados, com aprendizado contínuo
-                  e atenção a tendências do mercado.
-                </p>
-                <p>
-                  Experiência com <strong>React</strong>, <strong>React Native</strong>, <strong>Next.js</strong>,{" "}
-                  <strong>Tailwind</strong>, <strong>Node.js</strong> e integração com <strong>APIs REST</strong>.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Soft Skills e Cursos/Certificações */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            <div className="p-6 rounded-xl border-white/10 border hover:-translate-y-1 transition-all">
-              <h3 className="text-xl font-bold mb-4">🧩 Soft Skills</h3>
-              <div className="flex flex-wrap gap-2">
-                {softSkills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20 
-                    hover:shadow-[0_2px_8px_rgba(59,130,246,0.2)] transition"
-                  >
-                    {skill}
+          <p
+            data-about="bio"
+            className="max-w-[560px] text-center font-medium leading-relaxed text-mist"
+            style={{ fontSize: "clamp(1rem, 2vw, 1.35rem)" }}
+          >
+            {BIO.split(" ").map((word, wi) => (
+              <span key={wi} className="inline-block whitespace-nowrap">
+                {Array.from(word).map((ch, ci) => (
+                  <span key={ci} className="about-char inline-block">
+                    {ch}
                   </span>
                 ))}
-              </div>
-            </div>
-
-            <div className="p-6 rounded-xl border-white/10 border hover:-translate-y-1 transition-all">
-              <h3 className="text-xl font-bold mb-4">🎓 Cursos & Certificações</h3>
-              <ul className="list-disc list-inside text-gray-300 space-y-2">
-                {cursosCerts.map((c) => (
-                  <li key={c}>{c}</li>
-                ))}
-              </ul>
-              <div className="mt-4">
-                <h4 className="font-semibold text-gray-200 mb-2">🌎 Idiomas</h4>
-                <p className="text-gray-300">
-                  Português (nativo) • Inglês (intermediário)
-                </p>
-              </div>
-            </div>
-          </div>
+                <span className="about-char inline-block">&nbsp;</span>
+              </span>
+            ))}
+          </p>
         </div>
-      </RevealOnScroll>
+
+        <Suspense fallback={<div aria-hidden="true" className="h-36 w-full" />}>
+          <TechStack />
+        </Suspense>
+
+        <div data-about="footer" className="flex flex-col items-center gap-10">
+          <TechButton href="#contact" variant="primary" size="lg" className="opacity-0">
+            Fale comigo
+          </TechButton>
+
+          <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 opacity-0">
+            {STATS.map((s) => (
+              <li
+                key={s}
+                className="flex items-center gap-3 whitespace-nowrap text-xs uppercase tracking-wider text-gray-400 sm:text-sm"
+              >
+                <span aria-hidden="true" className="text-gradient font-black">
+                  ✦
+                </span>
+                {s}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </section>
   );
 };
