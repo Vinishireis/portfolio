@@ -2,34 +2,29 @@ import { useEffect, useState } from "react";
 
 export const LoadingScreen = ({ onComplete }) => {
   const [text, setText] = useState("");
-  const fullText = "<Hello World />";
+  const fullText = "<VinishiReis />";
 
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
-      setText(fullText.substring(0, index));
+      setText(fullText.substring(0, index + 1));
       index++;
-
-      if (index > fullText.length) {
+      if (index === fullText.length) {
         clearInterval(interval);
-
-        setTimeout(() => {
-          onComplete();
-        }, 1000);
+        setTimeout(onComplete, 600);
       }
-    }, 100);
-
+    }, 70);
     return () => clearInterval(interval);
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black text-gray-100 flex flex-col items-center justify-center">
-      <div className="mb-4 text-4xl font-mono font-bold">
-        {text} <span className="animate-blink ml-1"> | </span>
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-surface text-gray-100">
+      <div className="mb-6 font-mono text-3xl font-bold sm:text-4xl">
+        {text}
+        <span className="ml-1 animate-blink text-accent-400">|</span>
       </div>
-
-      <div className="w-[200px] h-[2px] bg-gray-800 rounded relative overflow-hidden">
-        <div className="w-[40%] h-full bg-blue-500 shadow-[0_0_15px_#3b82f6] animate-loading-bar"></div>
+      <div className="relative h-0.5 w-52 overflow-hidden rounded bg-slate-800">
+        <div className="h-full w-2/5 animate-loading-bar bg-linear-to-r from-accent-500 to-cyan-glow" />
       </div>
     </div>
   );

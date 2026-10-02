@@ -1,114 +1,97 @@
-# Personal Portfolio – Vinicius Nishimura Reis
+# Portfólio — Vinícius Nishimura Reis
 
-Este repositório contém o meu **portfólio pessoal**, desenvolvido para apresentar meus projetos, experiências e habilidades.  
-Construído com **React**, **Vite** e **TailwindCSS**, o projeto foca em uma interface moderna, responsiva e com animações fluidas.  
+Portfólio pessoal de [Vinícius Nishimura Reis](https://www.linkedin.com/in/vinicius-nishimura-reis/), desenvolvedor Full Stack Web & Mobile, estudante de Ciência da Computação na FECAP, coordenador do NúcleoTech e estagiário de TI no Audit Delivery Center da Deloitte.
 
-🔗 GitHub: [github.com/Vinishireis](https://github.com/Vinishireis)
+🔗 **Ao vivo:** https://portfolioreact-alpha-two.vercel.app
 
----
+## ✨ Funcionalidades
 
-## ✨ Features
+- **Design estilo pôster** — dark `#0C0C0C`, tipografia gigante Kanit com gradiente prata, seção branca de serviços com cantos arredondados e mascote interativo que segue o ponteiro
+- **Animações on-scroll** com GSAP + ScrollTrigger: marquee guiado pelo scroll, texto revelado caractere a caractere, cards de projeto empilhados com escala e reveals em todas as seções (com respeito a `prefers-reduced-motion`)
+- **Integração automática com o GitHub** — os repositórios públicos de [@Vinishireis](https://github.com/Vinishireis) são carregados via API do GitHub, com cache local de 1h para evitar rate limit
+- **Blog integrado** com artigos sobre conquistas e trajetória, com leitura em modal
+- **Notícias de tecnologia** via [GNews](https://gnews.io/) — IA, tecnologia, desenvolvimento, web e mobile, com filtro por tema, servidas por uma função serverless (`/api/news`) que protege a chave e faz cache
+- **Trajetória** em timeline (Deloitte, NúcleoTech, FECAP, Etec Sebrae)
+- **Conquistas** em destaque (hackathons Ibracon, Semana de Inovação FECAP, CSBC)
+- **Formulário de contato** via EmailJS, com fallback para `mailto:` quando não configurado
+- Design responsivo, dark, com glassmorphism e SEO/Open Graph configurados
 
-- **Design Moderno:** Layout inspirado em SaaS, com navbar em efeito glass e transições suaves.
-- **Responsividade Completa:** Compatível com desktop, tablet e mobile.
-- **Componentes Interativos:** Seções animadas e menu hambúrguer com transições suaves.
-- **Performance Otimizada:** Build rápido com Vite e estilização eficiente com TailwindCSS.
+## 🛠️ Stack
 
----
+| Camada | Tecnologias |
+| --- | --- |
+| UI | React 19, Tailwind CSS 4 |
+| Animações | GSAP 3 (ScrollTrigger) |
+| Build | Vite 8 |
+| Ícones | react-icons |
+| E-mail | @emailjs/browser |
+| Lint | ESLint 10 (flat config) |
 
-## 🛠️ Tecnologias Utilizadas
-
-- **React:** Biblioteca para construção de interfaces.
-- **Vite:** Ferramenta de build rápida e leve.
-- **TailwindCSS:** Framework de CSS utilitário.
-- **JavaScript (ES6+):** Padrões modernos e boas práticas.
-
----
-
-## 🚀 Instalação
-
-1. **Clone o repositório:**
-
-   ```bash
-   git clone https://github.com/Vinishireis/portfolio.git
-   cd portfolio
-````
-
-2. **Instale as dependências:**
-
-   ```bash
-   npm install
-   ```
-
-3. **Inicie o servidor de desenvolvimento:**
-
-   ```bash
-   npm run dev
-   ```
-
-   O app estará disponível em [http://localhost:5173](http://localhost:5173).
-
----
-
-## 📦 Build
-
-Para criar a versão de produção:
+## 🚀 Rodando localmente
 
 ```bash
-npm run build
+npm install
+npm run dev        # http://localhost:5173
 ```
 
-E para pré-visualizar:
+Outros scripts:
 
 ```bash
-npm run preview
+npm run build      # build de produção em dist/
+npm run preview    # serve o build localmente
+npm run lint       # ESLint
 ```
 
----
+## ✉️ Configurando o formulário de contato (opcional)
 
-## 📂 Estrutura de Pastas
+Crie um `.env` na raiz com as chaves do [EmailJS](https://www.emailjs.com/):
 
-```
-portfolio/
-├── public/
-│   └── index.html
-├── src/
-│   ├── components/
-│   │   ├── Navbar.jsx
-│   │   ├── MobileMenu.jsx
-│   │   ├── LoadingScreen.jsx
-│   │   └── sections/
-│   │       ├── Home.jsx
-│   │       ├── About.jsx
-│   │       ├── Projects.jsx
-│   │       └── Contact.jsx
-│   ├── index.css          # Estilos base do Tailwind e globais
-│   ├── App.jsx
-│   └── main.jsx
-├── package.json
-├── vite.config.js
-└── README.md
+```env
+VITE_SERVICE_ID=seu_service_id
+VITE_TEMPLATE_ID=seu_template_id
+VITE_PUBLIC_KEY=sua_public_key
 ```
 
----
+Sem essas variáveis, o formulário abre o cliente de e-mail do visitante via `mailto:`.
 
-## 🎨 Customização
+## 📰 Configurando as notícias (GNews)
 
-* **Tailwind CSS:** Ajuste o `index.css` ou adicione classes personalizadas.
-* **Componentes:** Modifique os arquivos em `src/components/` para atualizar conteúdo/estilo.
-* **Seções:** Personalize em `src/components/sections/` com suas informações e projetos.
+As notícias do Blog vêm da [GNews API](https://gnews.io/) através da rota `/api/news` (função serverless em `api/news.js`). A chave fica só no servidor — o plano gratuito da GNews também não libera CORS fora de `localhost`, então o navegador nunca chama a API diretamente.
 
----
+1. Crie uma conta em [gnews.io](https://gnews.io/) e copie a chave.
+2. Localmente, adicione ao `.env` (sem prefixo `VITE_`):
 
-## 🤝 Contribuição
+   ```env
+   GNEWS_API_KEY=sua_chave
+   ```
 
-Sugestões e melhorias são sempre bem-vindas!
-Abra uma **issue** ou envie um **pull request**.
+   O `npm run dev` e o `npm run preview` já servem `/api/news` pelo próprio Vite.
+3. Na Vercel, cadastre `GNEWS_API_KEY` em **Settings → Environment Variables** e faça um novo deploy.
 
----
+Cada atualização faz 5 consultas (uma por tema) e fica em cache por 3h no servidor/CDN e 30 min no navegador, bem dentro das 100 requisições/dia do plano gratuito. As consultas de cada tema ficam em `api/_gnews.js`.
 
-
-💻 Desenvolvido por **Vinicius Nishimura Reis**
-👉 [github.com/Vinishireis](https://github.com/Vinishireis)
+## 📁 Estrutura
 
 ```
+src/
+├── data/
+│   ├── profile.js      # dados pessoais, projetos em destaque, timeline, skills
+│   └── posts.js        # artigos do blog
+├── hooks/
+│   ├── useGitHubRepos.js  # integração com a API do GitHub (+ cache)
+│   ├── useReveal.js       # animações on-scroll com GSAP
+│   └── useTechNews.js     # notícias via /api/news (+ cache)
+├── components/
+│   ├── sections/       # Hero, About, Experience, Achievements, Projects, Blog, Contact
+│   └── ...             # Navbar, MobileMenu, LoadingScreen, Footer, SectionHeading, NewsFeed
+└── App.jsx
+api/
+├── news.js             # GET /api/news (função serverless da Vercel)
+└── _gnews.js           # consultas à GNews por tema, deduplicação e cache
+```
+
+## 📬 Contato
+
+- LinkedIn: [vinicius-nishimura-reis](https://www.linkedin.com/in/vinicius-nishimura-reis/)
+- GitHub: [@Vinishireis](https://github.com/Vinishireis)
+- E-mail: [nishimuravinicius28@gmail.com](mailto:nishimuravinicius28@gmail.com)

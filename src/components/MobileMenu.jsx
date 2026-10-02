@@ -1,71 +1,68 @@
+import { useEffect } from "react";
+import { FiGithub, FiLinkedin, FiX } from "react-icons/fi";
+import { navLinks } from "../data/nav";
+import { profile } from "../data/profile";
+import { TechButton } from "./ui/TechButton";
 
 export const MobileMenu = ({ menuOpen, setMenuOpen }) => {
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e) => e.key === "Escape" && setMenuOpen(false);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [menuOpen, setMenuOpen]);
+
   return (
     <div
-      className={`fixed top-0 left-0 w-full bg-[rgba(10,10,10,0.8)] z-40 flex flex-col items-center justify-center
-                     transition-all duration-300 ease-in-out
-
-                     ${
-                       menuOpen
-                         ? "h-screen opacity-100 pointer-events-auto"
-                         : "h-0 opacity-0 pointer-events-none"
-                     }
-                   `}
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-surface/95 backdrop-blur-xl transition-all duration-300 md:hidden ${
+        menuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+      }`}
     >
-      <button
+      <TechButton
+        size="icon"
+        icon={FiX}
+        aria-label="Fechar menu"
         onClick={() => setMenuOpen(false)}
-        className="absolute top-6 right-6 text-white text-3xl focus:outline-none cursor-pointer"
-        aria-label="Close Menu"
-      >
-        &times;
-      </button>
+        className="absolute right-6 top-3"
+      />
 
-      <a
-        href="#home"
-        onClick={() => setMenuOpen(false)}
-        className={`text-2xl font-semibold text-white my-4 transform transition-transform duration-300
-                    ${
-                      menuOpen
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 translate-y-5"
-                    }        
-            `}
-      >
-        Home
-      </a>
-      <a
-        href="#about"
-        onClick={() => setMenuOpen(false)}
-        className={`text-2xl font-semibold text-white my-4 transform transition-transform duration-300
-            ${
-              menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
-            }        
-    `}
-      >
-        About
-      </a>
-      <a
-        href="#projects"
-        onClick={() => setMenuOpen(false)}
-        className={`text-2xl font-semibold text-white my-4 transform transition-transform duration-300
-            ${
-              menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
-            }        
-    `}
-      >
-        Projects
-      </a>
-      <a
-        href="#contact"
-        onClick={() => setMenuOpen(false)}
-        className={`text-2xl font-semibold text-white my-4 transform transition-transform duration-300
-            ${
-              menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
-            }        
-    `}
-      >
-        Contact
-      </a>
+      <nav className="flex flex-col items-center gap-5">
+        {navLinks.map((link, i) => (
+          <a
+            key={link.href}
+            href={link.href}
+            onClick={() => setMenuOpen(false)}
+            style={{ transitionDelay: menuOpen ? `${i * 50}ms` : "0ms" }}
+            className={`display-heading text-gradient text-3xl transition-all duration-300 ${
+              menuOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      <div className="mt-10 flex items-center gap-4">
+        <TechButton
+          href={profile.links.github}
+          size="icon"
+          icon={FiGithub}
+          aria-label="GitHub"
+        />
+        <TechButton
+          href={profile.links.linkedin}
+          size="icon"
+          icon={FiLinkedin}
+          aria-label="LinkedIn"
+        />
+      </div>
     </div>
   );
 };

@@ -1,14 +1,18 @@
 import { useState } from "react";
-import "./App.css";
+import "./index.css";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { Navbar } from "./components/Navbar";
 import { MobileMenu } from "./components/MobileMenu";
-import { Home } from "./components/sections/Home";
+import { Hero } from "./components/sections/Hero";
+import { Marquee } from "./components/sections/Marquee";
 import { About } from "./components/sections/About";
+import { Services } from "./components/sections/Services";
 import { Projects } from "./components/sections/Projects";
-import { Footer } from "./components/Footer";
-import "./index.css";
+import { Experience } from "./components/sections/Experience";
+import { Achievements } from "./components/sections/Achievements";
+import { Blog } from "./components/sections/Blog";
 import { Contact } from "./components/sections/Contact";
+import { Footer } from "./components/Footer";
 
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -16,18 +20,25 @@ function App() {
 
   return (
     <>
-      {!isLoaded && <LoadingScreen onComplete={() => setIsLoaded(true)} />}{" "}
+      {!isLoaded && <LoadingScreen onComplete={() => setIsLoaded(true)} />}
       <div
-        className={`min-h-screen transition-opacity duration-700 ${
+        className={`min-h-screen bg-surface text-gray-100 transition-opacity duration-700 ${
           isLoaded ? "opacity-100" : "opacity-0"
-        } bg-black text-gray-100`}
+        }`}
       >
         <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-        <Home />
-        <About />
-        <Projects />
-        <Contact />
+        <main>
+          <Hero />
+          <Marquee />
+          <About />
+          <Services />
+          <Projects />
+          <Experience />
+          <Achievements />
+          <Blog />
+          <Contact />
+        </main>
         <Footer />
       </div>
     </>

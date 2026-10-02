@@ -1,42 +1,34 @@
-import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
+import { profile } from "../data/profile";
+import { TechButton } from "./ui/TechButton";
 
-export const Footer = () => {
-  return (
-    <footer className="w-full bg-white/5 border-t border-white/10 py-6 mt-12">
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between px-4">
-        {/* Texto */}
-        <p className="text-gray-400 text-sm text-center md:text-left mb-4 md:mb-0">
-          © {new Date().getFullYear()} Vinicius Nishimura Reis. Todos os direitos reservados.
-        </p>
-
-        {/* Redes sociais */}
-        <div className="flex space-x-6 text-xl">
-          <a
-            href="https://github.com/Vinishireis"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-400 hover:text-white transition-colors"
-          >
-            <FaGithub />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/vinicius-nishimura-reis/" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-400 hover:text-blue-500 transition-colors"
-          >
-            <FaLinkedin />
-          </a>
-          <a
-            href="https://www.instagram.com/Vinishireis"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-400 hover:text-pink-500 transition-colors"
-          >
-            <FaInstagram />
-          </a>
-        </div>
+export const Footer = () => (
+  <footer className="border-t border-line py-10">
+    <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-between">
+      <p className="font-mono text-sm text-gray-500">
+        © {new Date().getFullYear()} {profile.name} · Feito com React, Tailwind
+        CSS e GSAP
+      </p>
+      <div className="flex items-center gap-3">
+        <TechButton
+          href={profile.links.github}
+          size="icon"
+          icon={FiGithub}
+          aria-label="GitHub"
+        />
+        <TechButton
+          href={profile.links.linkedin}
+          size="icon"
+          icon={FiLinkedin}
+          aria-label="LinkedIn"
+        />
+        <TechButton
+          href={`mailto:${profile.links.email}`}
+          size="icon"
+          icon={FiMail}
+          aria-label="E-mail"
+        />
       </div>
-    </footer>
-  );
-};
+    </div>
+  </footer>
+);

@@ -1,50 +1,313 @@
 @import "tailwindcss";
 
-html,
+@theme {
+  --font-sans: "Kanit", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-surface: #0c0c0c;
+  --color-surface-raised: #141414;
+  --color-mist: #d7e2ea;
+  --color-line: rgba(215, 226, 234, 0.14);
+
+  /* Tons "prata" reaproveitando os nomes antigos: componentes existentes
+     que usam accent-* passam a seguir o novo esquema automaticamente */
+  --color-accent-50: #f2f6f9;
+  --color-accent-300: #d7e2ea;
+  --color-accent-400: #bbccd7;
+  --color-accent-500: #9fb3c1;
+  --color-accent-600: #646973;
+  --color-cyan-glow: #bbccd7;
+
+  --animate-blink: blink 0.9s step-end infinite;
+  --animate-loading-bar: loading-bar 0.9s ease infinite;
+  /* backwards (e não both) para não travar o transform do hover depois da entrada */
+  --animate-fade-up: fade-up 0.5s ease-out backwards;
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  @keyframes loading-bar {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(250%); }
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #0c0c0c;
+  overflow-x: clip;
+}
+
 body {
   margin: 0;
-  padding: 0;
-  font-family: "Space Grotesk", sans-serif;
-  background: #0a0a0a;
-  color: #f3f4f6;
+  font-family: var(--font-sans);
+  background: var(--color-surface);
+  color: #d7e2ea;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-@layer utilities {
-  @keyframes blink {
-    0%,
-    100% {
-      opacity: 1;
+::selection {
+  background: rgba(187, 204, 215, 0.35);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
+/* Gradiente de texto assinatura do site (títulos gigantes, logo, destaques) */
+@utility text-gradient {
+  background-image: linear-gradient(180deg, #646973 0%, #bbccd7 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+@utility card-glass {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(12px);
+  border-radius: 1.25rem;
+}
+
+/* Título de seção no estilo pôster */
+@utility display-heading {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  text-align: center;
+}
+
+/* Botão padrão do site, estilo "dev" (ver src/components/ui/TechButton.jsx):
+   mono em caixa alta, prompt ">" que avança no hover, cursor "_" piscando e
+   cantoneiras de mira que se abrem em volta. Na camada components para que
+   utilitários do Tailwind (w-full, opacity-0...) continuem sobrescrevendo. */
+@layer components {
+  .btn-tech {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      color 0.2s,
+      background-color 0.2s,
+      border-color 0.2s,
+      box-shadow 0.3s,
+      translate 0.2s;
+  }
+
+  .btn-tech::before,
+  .btn-tech::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border: 0 solid var(--color-accent-300);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      top 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+      left 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+      right 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+      bottom 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.2s;
+  }
+  .btn-tech::before {
+    top: 3px;
+    left: 3px;
+    border-top-width: 1.5px;
+    border-left-width: 1.5px;
+  }
+  .btn-tech::after {
+    right: 3px;
+    bottom: 3px;
+    border-right-width: 1.5px;
+    border-bottom-width: 1.5px;
+  }
+  .btn-tech:hover::before,
+  .btn-tech:focus-visible::before,
+  .btn-tech[aria-pressed="true"]::before {
+    top: -5px;
+    left: -5px;
+    opacity: 1;
+  }
+  .btn-tech:hover::after,
+  .btn-tech:focus-visible::after,
+  .btn-tech[aria-pressed="true"]::after {
+    right: -5px;
+    bottom: -5px;
+    opacity: 1;
+  }
+
+  .btn-tech:focus-visible {
+    outline: 2px dashed var(--color-mist);
+    outline-offset: 8px;
+  }
+  .btn-tech:disabled {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .btn-tech-prompt {
+    color: var(--color-accent-500);
+    transition:
+      translate 0.2s,
+      color 0.2s;
+  }
+  /* O gap é compensado pela margem negativa enquanto o cursor está fechado */
+  .btn-tech-caret {
+    width: 0;
+    margin-left: -0.6em;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      width 0.2s,
+      margin 0.2s,
+      opacity 0.2s;
+  }
+  .btn-tech:hover .btn-tech-prompt,
+  .group:hover .btn-tech-link .btn-tech-prompt {
+    translate: 3px 0;
+    color: currentColor;
+  }
+  .btn-tech:hover .btn-tech-caret,
+  .group:hover .btn-tech-link .btn-tech-caret {
+    width: 0.7em;
+    margin-left: 0;
+    opacity: 1;
+    animation: var(--animate-blink);
+  }
+
+  /* Tamanhos */
+  .btn-tech-sm {
+    height: 2.25rem;
+    padding: 0 0.95rem;
+    font-size: 0.66rem;
+  }
+  .btn-tech-md {
+    height: 2.75rem;
+    padding: 0 1.4rem;
+    font-size: 0.7rem;
+  }
+  .btn-tech-lg {
+    height: 3.25rem;
+    padding: 0 1.9rem;
+    font-size: 0.74rem;
+  }
+  .btn-tech-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    font-size: 1.05rem;
+    letter-spacing: 0;
+  }
+  @media (min-width: 640px) {
+    .btn-tech-md {
+      font-size: 0.76rem;
     }
-    50% {
-      opacity: 0;
+    .btn-tech-lg {
+      height: 3.5rem;
+      padding: 0 2.4rem;
+      font-size: 0.82rem;
     }
   }
 
-  .animate-blink {
-    animation: blink 0.8s step-end infinite;
+  /* Variantes (depois dos tamanhos: o link zera o padding) */
+  .btn-tech-primary {
+    color: var(--color-surface);
+    background: linear-gradient(180deg, #eef3f6 0%, #aebfcb 100%);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.7),
+      0 8px 24px -10px rgb(187 204 215 / 0.55);
+  }
+  .btn-tech-primary .btn-tech-prompt {
+    color: var(--color-accent-600);
+  }
+  .btn-tech-primary:hover {
+    translate: 0 -1px;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.7),
+      0 12px 32px -8px rgb(187 204 215 / 0.7);
   }
 
-  @keyframes loading {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(250%);
-    }
+  .btn-tech-outline {
+    color: var(--color-mist);
+    background: rgb(255 255 255 / 0.03);
+    border-color: rgb(215 226 234 / 0.3);
+  }
+  .btn-tech-outline:hover {
+    color: #fff;
+    background: rgb(215 226 234 / 0.08);
+    border-color: var(--color-mist);
   }
 
-  .animate-loading-bar {
-    animation: loading 0.8s ease infinite;
+  .btn-tech-ghost {
+    color: var(--color-mist);
+  }
+  .btn-tech-ghost:hover {
+    background: rgb(215 226 234 / 0.06);
+    border-color: var(--color-line);
+  }
+
+  .btn-tech-link {
+    height: auto;
+    padding: 0;
+    color: var(--color-accent-300);
+  }
+  .btn-tech-link::before,
+  .btn-tech-link::after {
+    display: none;
+  }
+  .btn-tech-link:hover,
+  .group:hover .btn-tech-link {
+    color: #fff;
   }
 }
 
-.reveal {
+/* Estado inicial dos elementos animados via GSAP (evita flash antes do JS) */
+[data-reveal] {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
 }
 
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }

@@ -1,0 +1,7 @@
+# O deploy pelo CLI envia a pasta local: segredos e artefatos ficam de fora.
+# As variáveis de ambiente vêm de Settings → Environment Variables na Vercel.
+.env
+.env.*
+!.env.example
+dist
+node_modules
