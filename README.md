@@ -2,7 +2,7 @@
 
 Portfólio pessoal de [Vinícius Nishimura Reis](https://www.linkedin.com/in/vinicius-nishimura-reis/), desenvolvedor Full Stack Web & Mobile, estudante de Ciência da Computação na FECAP, coordenador do NúcleoTech e estagiário de TI no Audit Delivery Center da Deloitte.
 
-🔗 **Ao vivo:** https://portfolioreact-alpha-two.vercel.app
+🔗 **Ao vivo:** https://www.vinishireis.dev.br
 
 ## ✨ Funcionalidades
 
@@ -10,6 +10,7 @@ Portfólio pessoal de [Vinícius Nishimura Reis](https://www.linkedin.com/in/vin
 - **Animações on-scroll** com GSAP + ScrollTrigger: marquee guiado pelo scroll, texto revelado caractere a caractere, cards de projeto empilhados com escala e reveals em todas as seções (com respeito a `prefers-reduced-motion`)
 - **Integração automática com o GitHub** — os repositórios públicos de [@Vinishireis](https://github.com/Vinishireis) são carregados via API do GitHub, com cache local de 1h para evitar rate limit
 - **Blog integrado** com artigos sobre conquistas e trajetória, com leitura em modal
+- **SEO completo**: Open Graph com imagem própria, dados estruturados (JSON-LD), sitemap, robots, `llms.txt` para IAs e conteúdo estático para buscadores sem JavaScript, tudo gerado a partir de `src/data`
 - **Notícias de tecnologia** via [GNews](https://gnews.io/) — IA, tecnologia, desenvolvimento, web e mobile, com filtro por tema, servidas por uma função serverless (`/api/news`) que protege a chave e faz cache
 - **Trajetória** em timeline (Deloitte, NúcleoTech, FECAP, Etec Sebrae)
 - **Conquistas** em destaque (hackathons Ibracon, Semana de Inovação FECAP, CSBC)
@@ -70,13 +71,34 @@ As notícias do Blog vêm da [GNews API](https://gnews.io/) através da rota `/a
 
 Cada atualização faz 5 consultas (uma por tema) e fica em cache por 3h no servidor/CDN e 30 min no navegador, bem dentro das 100 requisições/dia do plano gratuito. As consultas de cada tema ficam em `api/_gnews.js`.
 
+## 🔎 SEO, Open Graph e llms.txt
+
+O plugin `seo/plugin.js` gera tudo a partir de `src/data/profile.js`, `src/data/posts.js` e `src/data/seo.js`. Atualizar um projeto, conquista ou post atualiza junto o SEO:
+
+| O quê | Onde |
+| --- | --- |
+| Title, description, keywords, canonical, robots | `<head>` do `index.html` |
+| Open Graph e X/Twitter (cards no WhatsApp, LinkedIn, Discord...) | `<head>` + `public/og-image.png` (1200x630) |
+| Dados estruturados `Person` + `WebSite` + `ProfilePage` | JSON-LD no `<head>` |
+| Conteúdo estático (nome, bio, projetos, trajetória, blog) | dentro do `#root`, para robôs sem JS; o React substitui ao montar |
+| `/robots.txt`, `/sitemap.xml`, `/site.webmanifest` | gerados no build |
+| `/llms.txt` e `/llms-full.txt` ([llmstxt.org](https://llmstxt.org)) | gerados no build |
+
+- **Domínio canônico:** `profile.links.site` em `src/data/profile.js`.
+- **Textos de busca e compartilhamento:** `src/data/seo.js`.
+- **Imagem OG:** edite `seo/og-image.html` e regenere com
+  `chromium --headless --hide-scrollbars --window-size=1200,630 --virtual-time-budget=6000 --screenshot=public/og-image.png seo/og-image.html`
+  (mantenha abaixo de 300 KB, limite do WhatsApp).
+- **Verificação no Google Search Console / Bing:** defina `GOOGLE_SITE_VERIFICATION` e/ou `BING_SITE_VERIFICATION` nas variáveis de ambiente do deploy (ou verifique o domínio por registro TXT no DNS).
+
 ## 📁 Estrutura
 
 ```
 src/
 ├── data/
-│   ├── profile.js      # dados pessoais, projetos em destaque, timeline, skills
-│   └── posts.js        # artigos do blog
+│   ├── profile.js      # dados pessoais, bio, serviços, projetos, timeline, skills
+│   ├── posts.js        # artigos do blog
+│   └── seo.js          # títulos, descrições, palavras-chave e imagem OG
 ├── hooks/
 │   ├── useGitHubRepos.js  # integração com a API do GitHub (+ cache)
 │   ├── useReveal.js       # animações on-scroll com GSAP
@@ -88,6 +110,9 @@ src/
 api/
 ├── news.js             # GET /api/news (função serverless da Vercel)
 └── _gnews.js           # consultas à GNews por tema, deduplicação e cache
+seo/
+├── plugin.js           # plugin do Vite: <head>, JSON-LD, sitemap, robots, llms.txt
+└── og-image.html       # template da imagem Open Graph
 ```
 
 ## 📬 Contato

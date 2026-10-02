@@ -3,12 +3,17 @@ export const profile = {
   role: "Desenvolvedor Full Stack · Web & Mobile",
   headline:
     "Estudo Ciência da Computação na FECAP, coordeno o NúcleoTech e sou estagiário de TI na Deloitte. Gosto de pegar um problema real e transformar em produto.",
+  /** Texto da seção "Sobre mim" (também usado no SEO e no llms.txt) */
+  bio:
+    "Estudo Ciência da Computação na FECAP, sou desenvolvedor full stack e coordeno o NúcleoTech. Já levei projetos de hackathon ao pódio nacional e hoje construo produtos próprios enquanto estagio na Deloitte. Bora construir algo incrível juntos?",
+  location: { city: "São Paulo", region: "SP", country: "BR" },
   githubUser: "Vinishireis",
   links: {
     github: "https://github.com/Vinishireis",
     linkedin: "https://www.linkedin.com/in/vinicius-nishimura-reis/",
     email: "nishimuravinicius28@gmail.com",
-    site: "https://portfolioreact-alpha-two.vercel.app",
+    // Endereço canônico: usado no Open Graph, sitemap, robots, JSON-LD e llms.txt
+    site: "https://www.vinishireis.dev.br",
   },
 };
 
@@ -159,3 +164,36 @@ export const skills = {
     "Tailwind CSS",
   ],
 };
+
+export const services = [
+  {
+    n: "01",
+    name: "Desenvolvimento Web",
+    description:
+      "Aplicações web modernas e escaláveis com React, Next.js e TypeScript, do design system ao deploy.",
+  },
+  {
+    n: "02",
+    name: "Apps Mobile",
+    description:
+      "Apps multiplataforma com React Native e Expo, do protótipo à publicação, com foco em experiência nativa.",
+  },
+  {
+    n: "03",
+    name: "Back-end & APIs",
+    description:
+      "APIs e integrações com Node.js, Supabase e bancos SQL, incluindo autenticação, dados em tempo real e funções serverless.",
+  },
+  {
+    n: "04",
+    name: "Automação & Dados",
+    description:
+      "Scripts, pipelines e análise de dados com Python e SQL para automatizar processos e gerar insights.",
+  },
+  {
+    n: "05",
+    name: "UI/UX & Produto",
+    description:
+      "Interfaces bem construídas no Figma, com design orientado a produto, acessibilidade e conversão.",
+  },
+];

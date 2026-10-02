@@ -1,0 +1,182 @@
+<!doctype html>
+<!--
+  Template da imagem Open Graph (1200x630), no visual do Hero (PosterHero).
+  Para regenerar public/og-image.png depois de editar:
+
+    chromium --headless --hide-scrollbars --window-size=1200,630 \
+      --virtual-time-budget=6000 --screenshot=public/og-image.png seo/og-image.html
+
+  (google-chrome/chrome também funcionam com os mesmos parâmetros)
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@600;800;900&family=JetBrains+Mono:wght@500;700&display=block" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #060a14;
+    --card: #0b1120;
+    --ink: #e5e7eb;
+    --accent: #3b82f6;
+    --accent2: #22d3ee;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --display: "Kanit", "Arial Black", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--paper); }
+  body { position: relative; color: var(--ink); font-family: var(--mono); }
+
+  .room { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .glow {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(520px 340px at 18% 30%, rgba(59,130,246,.22), transparent 70%),
+      radial-gradient(420px 300px at 88% 85%, rgba(34,211,238,.12), transparent 70%);
+  }
+
+  .top {
+    position: absolute; left: 64px; right: 64px; top: 52px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 17px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  }
+  .index {
+    display: inline-flex; align-items: center; gap: 14px;
+    border: 2px solid var(--ink); border-radius: 999px; padding: 3px 18px 3px 3px; font-size: 14px;
+  }
+  .index b { background: var(--accent); color: var(--paper); border-radius: 999px; padding: 6px 16px; }
+  .brace { letter-spacing: .06em; }
+
+  h1 {
+    position: absolute; left: 64px; top: 128px;
+    font-family: var(--display); font-weight: 900; text-transform: uppercase;
+    letter-spacing: -.035em; line-height: .9;
+  }
+  .l1, .l2 { display: block; white-space: nowrap; }
+  .l1 { font-size: 152px; }
+  .l2 { font-size: 104px; }
+  .star { color: var(--accent2); font-size: .55em; vertical-align: .65em; margin-left: 4px; }
+  .badge {
+    position: absolute; left: 712px; top: 22px;
+    font-family: var(--mono); font-size: 22px; font-weight: 700; letter-spacing: 0; text-transform: none;
+    border: 2px solid var(--ink); border-radius: 50%; padding: 14px 24px; transform: rotate(-9deg);
+  }
+
+  .role {
+    position: absolute; left: 66px; top: 392px;
+    font-size: 30px; font-weight: 500; letter-spacing: .02em;
+  }
+  .role i { font-style: normal; color: var(--accent2); }
+
+  .stack {
+    position: absolute; left: 64px; top: 452px; display: flex; gap: 12px;
+    font-size: 16px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  }
+  .stack span { border: 1.5px solid rgba(229,231,235,.35); border-radius: 6px; padding: 10px 16px; background: rgba(255,255,255,.03); }
+
+  .pill {
+    position: absolute; left: 64px; bottom: 50px; display: flex;
+    font-size: 19px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  }
+  .pill-a { background: var(--card); border: 2px solid var(--ink); border-right: 0; border-radius: 8px 0 0 8px; padding: 17px 22px; }
+  .pill-b { position: relative; background: var(--accent); color: var(--paper); border: 2px solid var(--ink); border-radius: 0 8px 8px 0; padding: 17px 28px; }
+  .pill-b::before, .pill-b::after { content: ""; position: absolute; width: 12px; height: 12px; border: 0 solid var(--ink); }
+  .pill-b::before { top: -9px; left: -9px; border-top-width: 2px; border-left-width: 2px; }
+  .pill-b::after { right: -9px; bottom: -9px; border-right-width: 2px; border-bottom-width: 2px; }
+
+  .url {
+    position: absolute; right: 64px; bottom: 64px;
+    font-size: 22px; font-weight: 700; letter-spacing: .04em;
+  }
+  .url i { font-style: normal; color: var(--accent2); }
+
+  .flower { position: absolute; right: 92px; top: 226px; width: 168px; height: 168px; transform: rotate(14deg); }
+  .flower path { fill: var(--card); stroke: var(--ink); stroke-width: 2.6; stroke-linejoin: round; }
+  .curl { position: absolute; right: 84px; top: 112px; width: 92px; height: 92px; }
+  .curl path { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+
+  .corner { position: absolute; width: 26px; height: 26px; border: 0 solid rgba(229,231,235,.55); }
+  .tl { top: 22px; left: 22px; border-top-width: 2px; border-left-width: 2px; }
+  .tr { top: 22px; right: 22px; border-top-width: 2px; border-right-width: 2px; }
+  .bl { bottom: 22px; left: 22px; border-bottom-width: 2px; border-left-width: 2px; }
+  .br { bottom: 22px; right: 22px; border-bottom-width: 2px; border-right-width: 2px; }
+</style>
+</head>
+<body>
+  <svg class="room" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+    <g id="room" stroke="#e5e7eb" stroke-width="0.8" fill="none" opacity="0.09" vector-effect="non-scaling-stroke"></g>
+  </svg>
+  <div class="glow"></div>
+
+  <span class="corner tl"></span><span class="corner tr"></span>
+  <span class="corner bl"></span><span class="corner br"></span>
+
+  <header class="top">
+    <span class="index"><b>v2.0</b>Full Stack Dev</span>
+    <span>Código com propósito</span>
+    <span class="brace">{Web/Mobile}</span>
+  </header>
+
+  <h1>
+    <span class="l1">Vinícius</span>
+    <span class="l2">Nishimura Reis<span class="star">*</span></span>
+    <span class="badge">Disponível@</span>
+  </h1>
+
+  <p class="role"><i>&gt;</i> Desenvolvedor Full Stack · Web &amp; Mobile<i>_</i></p>
+
+  <div class="stack">
+    <span>React</span><span>React Native</span><span>Next.js</span><span>Node.js</span><span>TypeScript</span>
+  </div>
+
+  <div class="pill"><span class="pill-a">Aberto a*</span><span class="pill-b">&gt; Oportunidades</span></div>
+  <p class="url"><i>//</i> vinishireis.dev.br</p>
+
+  <svg class="curl" viewBox="0 0 100 100" aria-hidden="true">
+    <path d="M92 8 C70 6 52 22 58 40 C63 56 84 52 80 36 C76 22 50 30 40 48 C32 62 26 74 16 84 M14 66 L14 86 L34 86" />
+  </svg>
+  <svg class="flower" viewBox="0 0 120 120" aria-hidden="true">
+    <path id="flower" />
+    <circle cx="60" cy="60" r="4" fill="none" stroke="#e5e7eb" stroke-width="2" />
+  </svg>
+
+  <script>
+    // Mesma sala em perspectiva e mesma flor do PosterHero
+    const NS = "http://www.w3.org/2000/svg";
+    const room = document.getElementById("room");
+    const [x0, x1, y0, y1] = [95, 905, 85, 865];
+    const vx = (x0 + x1) / 2, vy = (y0 + y1) / 2;
+    const line = (a, b, c, d) => {
+      const l = document.createElementNS(NS, "line");
+      l.setAttribute("x1", a); l.setAttribute("y1", b); l.setAttribute("x2", c); l.setAttribute("y2", d);
+      room.appendChild(l);
+    };
+    const out = (x, y) => {
+      const dx = x - vx, dy = y - vy;
+      const tx = dx > 0 ? (1000 - x) / dx : dx < 0 ? -x / dx : Infinity;
+      const ty = dy > 0 ? (1000 - y) / dy : dy < 0 ? -y / dy : Infinity;
+      const t = Math.min(tx, ty);
+      line(x, y, x + dx * t, y + dy * t);
+    };
+    for (let i = 0; i <= 14; i++) {
+      const x = x0 + ((x1 - x0) * i) / 14;
+      line(x, y0, x, y1); out(x, y0); out(x, y1);
+    }
+    for (let j = 0; j <= 11; j++) {
+      const y = y0 + ((y1 - y0) * j) / 11;
+      line(x0, y, x1, y); out(x0, y); out(x1, y);
+    }
+    let d = "";
+    const lens = [1, 0.84, 0.95, 0.78, 0.9];
+    for (let i = 0; i <= 180; i++) {
+      const a = (i / 180) * Math.PI * 2;
+      const k = Math.floor(((a + Math.PI / 5) / (Math.PI * 2)) * 5) % 5;
+      const lobe = Math.pow(Math.abs(Math.cos((a * 5) / 2)), 0.9);
+      const r = 50 * (0.3 + 0.7 * lobe * lens[k]);
+      d += (i ? "L" : "M") + (60 + Math.cos(a - Math.PI / 2) * r).toFixed(1) + " " + (60 + Math.sin(a - Math.PI / 2) * r).toFixed(1);
+    }
+    document.getElementById("flower").setAttribute("d", d + "Z");
+  </script>
+</body>
+</html>

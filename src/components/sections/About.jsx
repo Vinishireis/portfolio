@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { TechButton } from "../ui/TechButton";
+import { profile } from "../../data/profile";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,8 +11,6 @@ const TechStack = lazy(() =>
   import("../TechStack").then((mod) => ({ default: mod.TechStack }))
 );
 
-const BIO =
-  "Estudo Ciência da Computação na FECAP, sou desenvolvedor full stack e coordeno o NúcleoTech. Já levei projetos de hackathon ao pódio nacional e hoje construo produtos próprios enquanto estagio na Deloitte. Bora construir algo incrível juntos?";
 
 const STATS = [
   "4+ prêmios em competições nacionais",
@@ -146,7 +145,7 @@ export const About = () => {
             className="max-w-[560px] text-center font-medium leading-relaxed text-mist"
             style={{ fontSize: "clamp(1rem, 2vw, 1.35rem)" }}
           >
-            {BIO.split(" ").map((word, wi) => (
+            {profile.bio.split(" ").map((word, wi) => (
               <span key={wi} className="inline-block whitespace-nowrap">
                 {Array.from(word).map((ch, ci) => (
                   <span key={ci} className="about-char inline-block">

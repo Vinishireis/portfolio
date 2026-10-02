@@ -30,8 +30,8 @@ export default [
     },
   },
   {
-    // Função serverless (Vercel) e config do Vite rodam no Node
-    files: ["api/**/*.js", "vite.config.js"],
+    // Função serverless (Vercel), plugin de SEO e config do Vite rodam no Node
+    files: ["api/**/*.js", "seo/**/*.js", "vite.config.js"],
     languageOptions: { globals: globals.node },
   },
 ];

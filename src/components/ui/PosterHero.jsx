@@ -202,6 +202,9 @@ export default function PosterHero({
   href,
   services = [],
 
+  /** Texto real do h1 (leitores de tela e buscadores); o pôster é decorativo. */
+  title,
+
   /* ---- paleta (a versão azul) ---- */
   accent = "#3b82f6",
   accent2 = "#22d3ee",
@@ -299,8 +302,11 @@ export default function PosterHero({
 
         <h1
           className="mph-h1"
-          aria-label={[year, initials, line2, line3, word + bracketed].join(" ")}
+          aria-label={
+            title ? undefined : [year, initials, line2, line3, word + bracketed].join(" ")
+          }
         >
+          {title && <span className="sr-only">{title}</span>}
           <span className="mph-line" aria-hidden="true">
             {chars(year)}
             <svg className="mph-arrow" viewBox="0 0 100 100">

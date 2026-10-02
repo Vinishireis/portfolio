@@ -71,6 +71,7 @@ export const Hero = () => {
         seeking="Oportunidades"
         href="#contact"
         services={services}
+        title={`${profile.name}, desenvolvedor full stack web e mobile`}
       />
     </section>
   );

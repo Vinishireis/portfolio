@@ -1,37 +1,5 @@
 import { useReveal } from "../../hooks/useReveal";
-
-const SERVICES = [
-  {
-    n: "01",
-    name: "Desenvolvimento Web",
-    description:
-      "Aplicações web modernas e escaláveis com React, Next.js e TypeScript, do design system ao deploy.",
-  },
-  {
-    n: "02",
-    name: "Apps Mobile",
-    description:
-      "Apps multiplataforma com React Native e Expo, do protótipo à publicação, com foco em experiência nativa.",
-  },
-  {
-    n: "03",
-    name: "Back-end & APIs",
-    description:
-      "APIs e integrações com Node.js, Supabase e bancos SQL, incluindo autenticação, dados em tempo real e funções serverless.",
-  },
-  {
-    n: "04",
-    name: "Automação & Dados",
-    description:
-      "Scripts, pipelines e análise de dados com Python e SQL para automatizar processos e gerar insights.",
-  },
-  {
-    n: "05",
-    name: "UI/UX & Produto",
-    description:
-      "Interfaces bem construídas no Figma, com design orientado a produto, acessibilidade e conversão.",
-  },
-];
+import { services } from "../../data/profile";
 
 export const Services = () => {
   const scope = useReveal();
@@ -51,7 +19,7 @@ export const Services = () => {
       </h2>
 
       <div className="mx-auto max-w-5xl">
-        {SERVICES.map((s, i) => (
+        {services.map((s, i) => (
           <article
             key={s.n}
             data-reveal="up"
