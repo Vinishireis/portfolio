@@ -76,6 +76,14 @@ export const featuredProjects = [
     status: "Em desenvolvimento",
   },
   {
+    name: "DeckForge",
+    url: "https://deckforge-d200h.vercel.app",
+    description:
+      "Configurador de código aberto do Ulanzi D200H para Linux: teclas, páginas, 23 mil ícones, atalhos e um relógio dev animado no LCD, editados pelo navegador e executados no computador.",
+    tags: ["Python", "React", "TypeScript", "USB HID", "Linux"],
+    status: "Código aberto",
+  },
+  {
     name: "FECAP Ágora",
     url: "https://www.linkedin.com/in/vinicius-nishimura-reis/",
     description:
