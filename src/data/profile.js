@@ -77,7 +77,7 @@ export const featuredProjects = [
   },
   {
     name: "DeckForge",
-    url: "https://deckforge-d200h.vercel.app",
+    url: "https://ulanzi-d200h-linux.vercel.app",
     description:
       "Configurador de código aberto do Ulanzi D200H para Linux: teclas, páginas, 23 mil ícones, atalhos e um relógio dev animado no LCD, editados pelo navegador e executados no computador.",
     tags: ["Python", "React", "TypeScript", "USB HID", "Linux"],
